@@ -10,6 +10,7 @@ def ancestor(orbits, a, b):
 def main(args):
     parents = dict()
 
+    o_map = dict()
     for line in open(args.file):
         a, b = line.strip().split(")")
         o_map[a] = o_map.get(a, []) + [ b ]
