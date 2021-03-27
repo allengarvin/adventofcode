@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import sys, os, argparse, operator, re
+import sys
 
 def query_fuel(mass, recursive=False):
     f = mass // 3 - 2
@@ -12,8 +12,8 @@ def query_fuel(mass, recursive=False):
     else:
         return f
 
-def main(args):
-    lines = [int(x.strip()) for x in open(args.file).readlines()]
+def main(fn):
+    lines = [int(x.strip()) for x in open(fn).readlines()]
     fuel_req1 = [query_fuel(x) for x in lines]
     print(sum(fuel_req1))
 
@@ -22,8 +22,5 @@ def main(args):
 
 if __name__ == "__main__":
     default_file = sys.argv[0].split("-")[0] + "-input.txt"
-    ap = argparse.ArgumentParser(description="2019 Day 1 AOC: Tyranny of the Rocket Equation")
-    ap.add_argument("file", help="Input file", default=default_file, nargs="?")
-    args = ap.parse_args()
-    main(args)
+    main(default_file if len(sys.argv) == 1 else sys.argv[1])
     
