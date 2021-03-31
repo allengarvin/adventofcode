@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, os, argparse, operator, re, itertools, collections
+import sys, argparse, operator, itertools, collections
 
 def main(args):
     lines = [x.strip() for x in open(args.file).readlines()]
