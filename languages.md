@@ -71,8 +71,8 @@ R
 Racket
 >Knowledge: 3
 
->Basically, it's a lisp. But unlike Common Lisp, it seems to have a lot more libraries
-> useful for the types of operations I want to do to write these.
+>Basically, it's a lisp. Based off Scheme, which I like more than Common Lisp, but it has lots
+> of useful libraries. I haven't written any DSLs yet, but hope to for some problem.
 
 Ruby
 >Knowledge: 4
