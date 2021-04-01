@@ -45,6 +45,6 @@ def main(args):
 
 if __name__ == "__main__":
     day = sys.argv[0].split("-")[0]
-    ap = argparse.ArgumentParser(description="2018 Day {0} AOC: FOO FOO".format(day))
-    ap.add_argument("serial", help="serial for puzzle", type=int, default=3463)
+    ap = argparse.ArgumentParser(description="2018 Day {0} AOC: Chronal Charge".format(day))
+    ap.add_argument("serial", help="serial for puzzle", type=int, default=3463, nargs="?")
     main(ap.parse_args())
