@@ -44,5 +44,3 @@
 (define (part2 s) (and (pair? s) (sandwich? s)))
 
 (println (length (filter part2 *strings*)))
-       
-  
