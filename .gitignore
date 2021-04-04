@@ -4,3 +4,6 @@ a.out
 test*
 push
 progress.py
+check.py
+*-test*.txt
+*~
