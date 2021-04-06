@@ -23,9 +23,3 @@
 
 (println (length (filter part1 *asc*)))
 (println (length (filter part2 *asc*)))
-
-
-
-
-
-
