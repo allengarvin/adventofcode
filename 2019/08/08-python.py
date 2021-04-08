@@ -21,7 +21,7 @@ def main(args):
 
 if __name__ == "__main__":
     day = sys.argv[0].split("-")[0]
-    ap = argparse.ArgumentParser(description="2019 Day {0} AOC: Not Quite Lisp".format(day))
+    ap = argparse.ArgumentParser(description="2019 Day {0} AOC: Space Image Format".format(day))
     ap.add_argument("file", help="Input file", default=day + "-input.txt", nargs="?")
     main(ap.parse_args())
     
