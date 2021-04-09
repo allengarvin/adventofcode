@@ -6,5 +6,3 @@
 
 (println (mul (filter (λ (x) (member (- 2020 x) *numbers*)) *numbers*)))
 (println (sqrt (mul (map mul (filter (λ (pair) (member (- 2020 (sum pair)) *numbers*)) (combinations *numbers* 2))))))
-
-
