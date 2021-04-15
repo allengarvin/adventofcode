@@ -7,3 +7,5 @@ progress.py
 check.py
 *-test*.txt
 *~
+*tmp*
+[a-z]*.py
