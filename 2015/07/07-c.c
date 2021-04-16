@@ -54,7 +54,8 @@ struct instruction *parse(char *left, char *right) {
     if( strlen(right) == 1 )
         instr->target = right[0] - 97;
     else 
-        instr->target = (right[0] - 97) * 26 + (right[1] - 97);
+        instr->target = (right[0] - 96) * 26 + (right[1] - 97);
+    //printf("strlen('%s') = %d yielding %d\n", right, strlen(right), instr->target);
 
     if( !b && !c ) {
         if( isdigit(a[0]) ) {
@@ -63,7 +64,7 @@ struct instruction *parse(char *left, char *right) {
         } else {
             instr->a_type = TYPE_VAR;
             if( strlen(a) == 2 )
-                instr->a = (a[0] - 97) * 26 + (a[1] - 97);
+                instr->a = (a[0] - 96) * 26 + (a[1] - 97);
             else
                 instr->a = a[0] - 97;
         }
@@ -74,7 +75,7 @@ struct instruction *parse(char *left, char *right) {
     if( strcmp(a, "NOT") == 0 ) {
          instr->a_type = TYPE_VAR;
          if( strlen(b) == 2 )
-            instr->a = (b[0] - 97) * 26 + (b[1] - 97);
+            instr->a = (b[0] - 96) * 26 + (b[1] - 97);
          else
             instr->a = b[0] - 97;
         instr->func = &NOT;
@@ -89,17 +90,18 @@ struct instruction *parse(char *left, char *right) {
     } else {
         instr->a_type = TYPE_VAR;
         if( strlen(a) == 2 )
-            instr->a = (a[0] - 97) * 26 + (a[1] - 97);
+            instr->a = (a[0] - 96) * 26 + (a[1] - 97);
         else
             instr->a = a[0] - 97;
     }
+    //printf("a=<%s> b=<%s> c=<%s> target=<%s> (%d)\n", a, b, c, right, instr->target);
     if( isdigit(c[0]) ) {
         instr->b_type = TYPE_INT;
         instr->b = (unsigned short) atoi(c);
     } else {
         instr->b_type = TYPE_VAR;
         if( strlen(c) == 2 )
-            instr->b = (c[0] - 97) * 26 + (c[1] - 97);
+            instr->b = (c[0] - 96) * 26 + (c[1] - 97);
         else
             instr->b = c[0] - 97;
     }
@@ -120,7 +122,6 @@ struct instruction *parse(char *left, char *right) {
         return instr;
     }
 
-    printf("a=<%s> b=<%s> c=<%s>\n", a, b, c);
     return instr;
 }
 
@@ -219,7 +220,7 @@ int main(int argc, char *argv[]) {
     FILE *fd;
     char buf[80], tmp[80];
     struct instruction instructs[500], *t;
-    int i_ptr = 0;
+    int i_ptr = 0, part1;
 
     for( int i=0; i<676; i++ )
         variables[i] = 0;
@@ -245,30 +246,38 @@ int main(int argc, char *argv[]) {
         right = buf + i + 3;
         
         instructs[i_ptr++] = *parse(left, right);
-        printf("%s ===> ", tmp);
-        print_instruction(&instructs[i_ptr-1]);
-        //t = parse(left, right);
-        //execute(t);
     }
-    return 1;
+
     // We only use qsort for the production data, which is formatted particularly
+    // The dependencies are in alphabetical order, I discovered, while writing the Ruby version.
     if( i_ptr > 300 ) {
         qsort(instructs, i_ptr, sizeof(struct instruction), compare);
         for( int i=1; i<i_ptr; i++ )
-            print_instruction(&instructs[i]);
-            //execute(&instructs[i]);
+            //print_instruction(&instructs[i]);
+            execute(&instructs[i]);
 
-        //execute(&instructs[0]);
-            print_instruction(&instructs[0]);
+        execute(&instructs[0]);
+        //    print_instruction(&instructs[0]);
     } else  {
         for( int i=0; i<i_ptr; i++ )
             execute(&instructs[i]);
     }
     
+    /*
     for( int i=0; i<676; i++ )
         if( variables[i] )
             printf("%s: %d\n", print_variable(i), variables[i]);
+    */
 
-    //printf("%d\n", variables[0]);
-    
+    part1 = variables[0];
+    printf("%d\n", part1);
+    for( int i=0; i<626; i++ )
+        variables[i] = 0;
+    instructs[1].a = part1;
+    for( int i=1; i<i_ptr; i++ )
+        //print_instruction(&instructs[i]);
+        execute(&instructs[i]);
+
+    execute(&instructs[0]);
+    printf("%d\n", variables[0]);
 }
