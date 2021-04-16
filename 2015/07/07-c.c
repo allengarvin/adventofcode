@@ -139,27 +139,27 @@ void execute(struct instruction *t) {
 
     if( t->func == NOT ) {
         if( t->a_type == TYPE_INT ) {
-            printf("NOT: %s := NOT %d\n", print_variable(t->target), t->a);
+            // printf("NOT: %s := NOT %d\n", print_variable(t->target), t->a);
             val1 = t->a;
         }
         else {
             val1 = variables[t->a];
-            printf("NOT: %s := NOT %s\n", print_variable(t->target), print_variable(t->a));
+            // printf("NOT: %s := NOT %s\n", print_variable(t->target), print_variable(t->a));
         }
         variables[t->target] = t->func(val1, 0);
-        printf("  Value: %d\n", variables[t->target]);
+        // printf("  Value: %d\n", variables[t->target]);
     }
     if( t->func == ASSIGN ) {
         if( t->a_type == TYPE_INT ) {
-            printf("ASSIGN: %s := %d\n", print_variable(t->target), t->a);
+            // printf("ASSIGN: %s := %d\n", print_variable(t->target), t->a);
             val1 = t->a;
         }
         else {
             val1 = variables[t->a];
-            printf("ASSIGN: %s := %s\n", print_variable(t->target), print_variable(t->a));
+            // printf("ASSIGN: %s := %s\n", print_variable(t->target), print_variable(t->a));
         }
         variables[t->target] = t->func(val1, 0);
-        printf("  Value: %d\n", variables[t->target]);
+        // printf("  Value: %d\n", variables[t->target]);
     }
     if( t->a_type == TYPE_INT )
         val1 = t->a;
@@ -173,9 +173,51 @@ void execute(struct instruction *t) {
     variables[t->target] = t->func(val1, val2);
 }
 
+int compare(const void *a, const void *b) {
+    struct instruction *ia, *ib;
+
+    ia = (struct instruction *)a;
+    ib = (struct instruction *)b;
+    return ia->target > ib->target;
+}
+
+void print_instruction(struct instruction *t) {
+    printf("%s := ", print_variable(t->target));
+    if( t->func == NOT ) {
+        if( t->a_type == TYPE_INT )
+            printf("! %d\n", t->a);
+        else
+            printf("!%s\n", print_variable(t->a));
+        return;
+    }
+    if( t->func == ASSIGN ) {
+        if( t->a_type == TYPE_INT )
+            printf(" %d\n", t->a);
+        else
+            printf(" %s\n", print_variable(t->a));
+        return;
+    }
+    if( t->a_type == TYPE_INT )
+        printf(" %d ", t->a);
+    else
+        printf(" %s ", print_variable(t->a));
+
+    if( t->func == LSHIFT ) printf(" << ");
+    if( t->func == RSHIFT ) printf(" >> ");
+    if( t->func == AND ) printf(" & ");
+    if( t->func == OR ) printf(" | ");
+
+    if( t->b_type == TYPE_INT )
+        printf("%d ", t->b);
+    else
+        printf(" %s ", print_variable(t->b));
+    
+    printf("\n");
+}
+
 int main(int argc, char *argv[]) {
     FILE *fd;
-    char buf[80];
+    char buf[80], tmp[80];
     struct instruction instructs[500], *t;
     int i_ptr = 0;
 
@@ -192,6 +234,7 @@ int main(int argc, char *argv[]) {
         int i;
 
         buf[strlen(buf)-1] = 0;
+        strncpy(tmp, buf, 79);
 
         for( i=0; i<strlen(buf); i++ )
             if( buf[i] == '-' )
@@ -201,13 +244,31 @@ int main(int argc, char *argv[]) {
         left = buf;
         right = buf + i + 3;
         
-        //instructs[i++] = *parse(left, right);
-        t = parse(left, right);
-        execute(t);
+        instructs[i_ptr++] = *parse(left, right);
+        printf("%s ===> ", tmp);
+        print_instruction(&instructs[i_ptr-1]);
+        //t = parse(left, right);
+        //execute(t);
     }
+    return 1;
+    // We only use qsort for the production data, which is formatted particularly
+    if( i_ptr > 300 ) {
+        qsort(instructs, i_ptr, sizeof(struct instruction), compare);
+        for( int i=1; i<i_ptr; i++ )
+            print_instruction(&instructs[i]);
+            //execute(&instructs[i]);
+
+        //execute(&instructs[0]);
+            print_instruction(&instructs[0]);
+    } else  {
+        for( int i=0; i<i_ptr; i++ )
+            execute(&instructs[i]);
+    }
+    
     for( int i=0; i<676; i++ )
         if( variables[i] )
             printf("%s: %d\n", print_variable(i), variables[i]);
 
+    //printf("%d\n", variables[0]);
     
 }
