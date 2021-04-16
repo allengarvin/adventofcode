@@ -26,15 +26,19 @@ unsigned short ASSIGN(unsigned short a, unsigned short _) {
 }
 
 unsigned short LSHIFT(unsigned short a, unsigned short b) {
+    return (a << b) & 65535;
 }
 
 unsigned short RSHIFT(unsigned short a, unsigned short b) {
+    return (a >> b) & 65535;
 }
 
 unsigned short AND(unsigned short a, unsigned short b) {
+    return a & b;
 }
 
 unsigned short OR(unsigned short a, unsigned short b) {
+    return a | b;
 }
 
 struct instruction *parse(char *left, char *right) {
@@ -131,16 +135,42 @@ char *print_variable(int n) {
 }
 
 void execute(struct instruction *t) {
+    int val1, val2;
+
     if( t->func == NOT ) {
-        printf("NOT\n");
+        if( t->a_type == TYPE_INT ) {
+            printf("NOT: %s := NOT %d\n", print_variable(t->target), t->a);
+            val1 = t->a;
+        }
+        else {
+            val1 = variables[t->a];
+            printf("NOT: %s := NOT %s\n", print_variable(t->target), print_variable(t->a));
+        }
+        variables[t->target] = t->func(val1, 0);
+        printf("  Value: %d\n", variables[t->target]);
     }
     if( t->func == ASSIGN ) {
-        if( t->a_type == TYPE_INT )
+        if( t->a_type == TYPE_INT ) {
             printf("ASSIGN: %s := %d\n", print_variable(t->target), t->a);
-        else
+            val1 = t->a;
+        }
+        else {
+            val1 = variables[t->a];
             printf("ASSIGN: %s := %s\n", print_variable(t->target), print_variable(t->a));
-                
+        }
+        variables[t->target] = t->func(val1, 0);
+        printf("  Value: %d\n", variables[t->target]);
     }
+    if( t->a_type == TYPE_INT )
+        val1 = t->a;
+    else
+        val1 = variables[t->a];
+    if( t->b_type == TYPE_INT )
+        val2 = t->b;
+    else
+        val2 = variables[t->b];
+
+    variables[t->target] = t->func(val1, val2);
 }
 
 int main(int argc, char *argv[]) {
@@ -175,6 +205,9 @@ int main(int argc, char *argv[]) {
         t = parse(left, right);
         execute(t);
     }
+    for( int i=0; i<676; i++ )
+        if( variables[i] )
+            printf("%s: %d\n", print_variable(i), variables[i]);
 
     
 }
