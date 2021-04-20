@@ -3,6 +3,7 @@ a.out
 *-test.txt
 test*
 push
+summary
 progress.py
 check.py
 *-test*.txt
