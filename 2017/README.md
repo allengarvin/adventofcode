@@ -8,7 +8,7 @@
 |  6 | [✓][06py]    |              | [✓][06c]     |              |              |              |              |
 |  7 | [✓][07py]    |              |              |              |              |              |              |
 |  8 | [✓][08py]    |              | [✓][08c]     |              |              |              |              |
-|  9 | [✓][09py]    |              |              |              |              |              |              |
+|  9 | [✓][09py]    |              | [✓][09c]     |              |              |              |              |
 | 10 | [✓][10py]    |              |              |              |              |              |              |
 | 11 | [✓][11py]    |              |              |              |              |              |              |
 | 12 | [✓][12py]    |              |              |              |              |              |              |
@@ -49,6 +49,7 @@
 [08py]:      https://github.com/allengarvin/adventofcode/blob/main/2017/08/08-python.py
 [08c]:       https://github.com/allengarvin/adventofcode/blob/main/2017/08/08-c.c
 [09py]:      https://github.com/allengarvin/adventofcode/blob/main/2017/09/09-python.py
+[09c]:       https://github.com/allengarvin/adventofcode/blob/main/2017/09/09-c.c
 [10py]:      https://github.com/allengarvin/adventofcode/blob/main/2017/10/10-python.py
 [11py]:      https://github.com/allengarvin/adventofcode/blob/main/2017/11/11-python.py
 [12py]:      https://github.com/allengarvin/adventofcode/blob/main/2017/12/12-python.py
