@@ -12,7 +12,7 @@
 | 10 | [✓][10py]    | [✓][10rb]    |              | [✓][10rkt]   |              |              |              |              |              |
 | 11 | [✓][11py]    |              |              |              |              |              |              |              |              |
 | 12 | [✓][12py]    |              | [✓][12c]     |              |              |              |              |              |              |
-| 13 | [✓][13py]    |              |              |              |              |              |              |              |              |
+| 13 | [✓][13py]    |              |              | [✓][13rkt]   |              |              |              |              |              |
 | 14 | [✓][14py]    |              |              |              |              |              |              |              |              |
 | 15 | [✓][15py]    | [✓][15rb]    | [✓][15c]     |              |              |              |              |              |              |
 | 16 | [✓][16py]    |              |              |              |              |              |              |              |              |
@@ -75,6 +75,7 @@
 [12py]:      https://github.com/allengarvin/adventofcode/blob/main/2020/12/12-python.py
 [12c]:       https://github.com/allengarvin/adventofcode/blob/main/2020/12/12-c.c
 [13py]:      https://github.com/allengarvin/adventofcode/blob/main/2020/13/13-python.py
+[13rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2020/13/13-racket.rkt
 [14py]:      https://github.com/allengarvin/adventofcode/blob/main/2020/14/14-python.py
 [15py]:      https://github.com/allengarvin/adventofcode/blob/main/2020/15/15-python.py
 [15rb]:      https://github.com/allengarvin/adventofcode/blob/main/2020/15/15-ruby.rb
