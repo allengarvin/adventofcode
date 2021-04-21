@@ -3,7 +3,7 @@
 |  1 | [✓][01py]    | [✓][01rb]    | [✓][01c]     | [✓][01rkt]   |              |              |              |
 |  2 | [✓][02py]    | [✓][02rb]    | [✓][02c]     | [✓][02rkt]   |              |              |              |
 |  3 | [✓][03py]    |              |              |              |              |              |              |
-|  4 | [✓][04py]    |              | [✓][04c]     | [✓][04rkt]   |              |              | [✓][04sh]    |
+|  4 | [✓][04py]    | [✓][04rb]    | [✓][04c]     | [✓][04rkt]   |              |              | [✓][04sh]    |
 |  5 | [✓][05py]    |              | [✓][05c]     | [✓][05rkt]   |              |              |              |
 |  6 | [✓][06py]    |              | [✓][06c]     |              |              |              |              |
 |  7 | [✓][07py]    |              |              |              |              |              |              |
@@ -36,6 +36,7 @@
 [02rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2017/02/02-racket.rkt
 [03py]:      https://github.com/allengarvin/adventofcode/blob/main/2017/03/03-python.py
 [04py]:      https://github.com/allengarvin/adventofcode/blob/main/2017/04/04-python.py
+[04rb]:      https://github.com/allengarvin/adventofcode/blob/main/2017/04/04-ruby.rb
 [04c]:       https://github.com/allengarvin/adventofcode/blob/main/2017/04/04-c.c
 [04rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2017/04/04-racket.rkt
 [04sh]:      https://github.com/allengarvin/adventofcode/blob/main/2017/04/04-bash.sh
