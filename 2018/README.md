@@ -1,7 +1,7 @@
 |    | Python       | Ruby         | C            | Racket       | Pike         | Forth        | Bash         |
 | -- | ------       | ----         | -            | ------       | ----         | -----        | ----         |
 |  1 | [✓][01py]    | [✓][01rb]    | [✓][01c]     | [✓][01rkt]   |              |              | [✓][01sh]    |
-|  2 | [✓][02py]    |              | [✓][02c]     | [✓][02rkt]   |              |              |              |
+|  2 | [✓][02py]    | [✓][02rb]    | [✓][02c]     | [✓][02rkt]   |              |              |              |
 |  3 | [✓][03py]    |              | [✓][03c]     | [✓][03rkt]   |              |              |              |
 |  4 | [✓][04py]    |              |              |              |              |              |              |
 |  5 | [✓][05py]    |              | [✓][05c]     |              |              |              |              |
@@ -32,6 +32,7 @@
 [01rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2018/01/01-racket.rkt
 [01sh]:      https://github.com/allengarvin/adventofcode/blob/main/2018/01/01-bash.sh
 [02py]:      https://github.com/allengarvin/adventofcode/blob/main/2018/02/02-python.py
+[02rb]:      https://github.com/allengarvin/adventofcode/blob/main/2018/02/02-ruby.rb
 [02c]:       https://github.com/allengarvin/adventofcode/blob/main/2018/02/02-c.c
 [02rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2018/02/02-racket.rkt
 [03py]:      https://github.com/allengarvin/adventofcode/blob/main/2018/03/03-python.py
