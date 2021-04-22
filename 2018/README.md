@@ -2,7 +2,7 @@
 | -- | ------       | ----         | -            | ------       | ----         | -----        | ----         |
 |  1 | [✓][01py]    | [✓][01rb]    | [✓][01c]     | [✓][01rkt]   |              |              | [✓][01sh]    |
 |  2 | [✓][02py]    | [✓][02rb]    | [✓][02c]     | [✓][02rkt]   |              |              |              |
-|  3 | [✓][03py]    |              | [✓][03c]     | [✓][03rkt]   |              |              |              |
+|  3 | [✓][03py]    | [✓][03rb]    | [✓][03c]     | [✓][03rkt]   |              |              |              |
 |  4 | [✓][04py]    |              |              |              |              |              |              |
 |  5 | [✓][05py]    |              | [✓][05c]     |              |              |              |              |
 |  6 |              |              |              |              |              |              |              |
@@ -36,6 +36,7 @@
 [02c]:       https://github.com/allengarvin/adventofcode/blob/main/2018/02/02-c.c
 [02rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2018/02/02-racket.rkt
 [03py]:      https://github.com/allengarvin/adventofcode/blob/main/2018/03/03-python.py
+[03rb]:      https://github.com/allengarvin/adventofcode/blob/main/2018/03/03-ruby.rb
 [03c]:       https://github.com/allengarvin/adventofcode/blob/main/2018/03/03-c.c
 [03rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2018/03/03-racket.rkt
 [04py]:      https://github.com/allengarvin/adventofcode/blob/main/2018/04/04-python.py
