@@ -1,6 +1,6 @@
 |    | Python       | Ruby         | C            | Racket       | Pike         | Forth        | Bash         |
 | -- | ------       | ----         | -            | ------       | ----         | -----        | ----         |
-|  1 | [✓][01py]    |              | [✓][01c]     | [✓][01rkt]   |              |              | [✓][01sh]    |
+|  1 | [✓][01py]    | [✓][01rb]    | [✓][01c]     | [✓][01rkt]   |              |              | [✓][01sh]    |
 |  2 | [✓][02py]    |              | [✓][02c]     | [✓][02rkt]   |              |              |              |
 |  3 | [✓][03py]    |              | [✓][03c]     | [✓][03rkt]   |              |              |              |
 |  4 | [✓][04py]    |              |              |              |              |              |              |
@@ -27,6 +27,7 @@
 | 25 |              |              |              |              |              |              |              |
 
 [01py]:      https://github.com/allengarvin/adventofcode/blob/main/2018/01/01-python.py
+[01rb]:      https://github.com/allengarvin/adventofcode/blob/main/2018/01/01-ruby.rb
 [01c]:       https://github.com/allengarvin/adventofcode/blob/main/2018/01/01-c.c
 [01rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2018/01/01-racket.rkt
 [01sh]:      https://github.com/allengarvin/adventofcode/blob/main/2018/01/01-bash.sh
