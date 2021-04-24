@@ -6,7 +6,7 @@
 |  4 | [✓][04py]    | [✓][04rb]    | [✓][04c]     | [✓][04rkt]   |              |              | [✓][04sh]    |
 |  5 | [✓][05py]    | [✓][05rb]    | [✓][05c]     | [✓][05rkt]   |              |              |              |
 |  6 | [✓][06py]    | [✓][06rb]    | [✓][06c]     |              |              |              |              |
-|  7 | [✓][07py]    | [✓][07rb]    |              |              |              |              |              |
+|  7 | [✓][07py]    | [✓][07rb]    |              | [✓][07rkt]   |              |              |              |
 |  8 | [✓][08py]    |              | [✓][08c]     |              |              |              |              |
 |  9 | [✓][09py]    |              | [✓][09c]     |              |              |              |              |
 | 10 | [✓][10py]    |              |              |              |              |              |              |
@@ -50,6 +50,7 @@
 [06c]:       https://github.com/allengarvin/adventofcode/blob/main/2017/06/06-c.c
 [07py]:      https://github.com/allengarvin/adventofcode/blob/main/2017/07/07-python.py
 [07rb]:      https://github.com/allengarvin/adventofcode/blob/main/2017/07/07-ruby.rb
+[07rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2017/07/07-racket.rkt
 [08py]:      https://github.com/allengarvin/adventofcode/blob/main/2017/08/08-python.py
 [08c]:       https://github.com/allengarvin/adventofcode/blob/main/2017/08/08-c.c
 [09py]:      https://github.com/allengarvin/adventofcode/blob/main/2017/09/09-python.py
