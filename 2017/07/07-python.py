@@ -11,9 +11,7 @@ def weights(root, progs, depth):
 
     for i in progs[root][1]:
         wt += weights(i, progs, depth + 1)
-    # print pad + root, " (%d) (%d)" % (mywt, wt)
-    if depth == 0:
-        return root
+    print pad + root, " (%d) (%d)" % (mywt, wt)
     return wt
 
 def main(argv):
@@ -39,6 +37,7 @@ def main(argv):
             continue
         root = i
         break
+    print(root)
 
     print weights(root, progs, 0)
 
