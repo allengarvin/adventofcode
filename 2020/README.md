@@ -24,7 +24,7 @@
 | 22 | [✓][22py]    |              |              |              |              |              |              |              |              |
 | 23 | [✓][23py]    |              |              |              |              |              |              |              |              |
 | 24 | [✓][24py]    |              |              |              |              |              |              |              |              |
-| 25 | [✓][25py]    | [✓][25rb]    | [✓][25c]     |              |              |              |              |              |              |
+| 25 | [✓][25py]    | [✓][25rb]    | [✓][25c]     | [✓][25rkt]   |              |              |              |              |              |
 
 [01py]:      https://github.com/allengarvin/adventofcode/blob/main/2020/01/01-python.py
 [01rb]:      https://github.com/allengarvin/adventofcode/blob/main/2020/01/01-ruby.rb
@@ -95,3 +95,4 @@
 [25py]:      https://github.com/allengarvin/adventofcode/blob/main/2020/25/25-python.py
 [25rb]:      https://github.com/allengarvin/adventofcode/blob/main/2020/25/25-ruby.rb
 [25c]:       https://github.com/allengarvin/adventofcode/blob/main/2020/25/25-c.c
+[25rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2020/25/25-racket.rkt
