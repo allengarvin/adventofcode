@@ -15,7 +15,7 @@
 | 13 | [✓][13py]    |              | [✓][13c]     |              |              |              |              |
 | 14 | [✓][14py]    |              |              |              |              |              |              |
 | 15 | [✓][15py]    |              |              |              |              |              |              |
-| 16 | [✓][16py]    |              |              |              |              |              |              |
+| 16 | [✓][16py]    |              | [✓][16c]     |              |              |              |              |
 | 17 | [✓][17py]    |              |              |              |              |              |              |
 | 18 | [✓][18py]    |              |              |              |              |              |              |
 | 19 | [✓][19py]    |              |              |              |              |              |              |
@@ -59,6 +59,7 @@
 [14py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/14/14-python.py
 [15py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/15/15-python.py
 [16py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/16/16-python.py
+[16c]:       https://github.com/allengarvin/adventofcode/blob/main/2016/16/16-c.c
 [17py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/17/17-python.py
 [18py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/18/18-python.py
 [19py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/19/19-python.py
