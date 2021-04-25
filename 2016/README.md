@@ -7,7 +7,7 @@
 |  5 | [✓][05py]    |              | [✓][05c]     | [✓][05rkt]   |              |              |              |
 |  6 | [✓][06py]    | [✓][06rb]    | [✓][06c]     | [✓][06rkt]   |              |              |              |
 |  7 | [✓][07py]    |              | [✓][07c]     |              |              |              |              |
-|  8 | [✓][08py]    |              |              |              |              |              |              |
+|  8 | [✓][08py]    | [✓][08rb]    |              |              |              |              |              |
 |  9 | [✓][09py]    |              |              |              |              |              |              |
 | 10 | [✓][10py]    |              |              |              |              |              |              |
 | 11 | [✓][11py]    |              |              |              |              |              |              |
@@ -52,6 +52,7 @@
 [07py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/07/07-python.py
 [07c]:       https://github.com/allengarvin/adventofcode/blob/main/2016/07/07-c.c
 [08py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/08/08-python.py
+[08rb]:      https://github.com/allengarvin/adventofcode/blob/main/2016/08/08-ruby.rb
 [09py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/09/09-python.py
 [10py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/10/10-python.py
 [11py]:      https://github.com/allengarvin/adventofcode/blob/main/2016/11/11-python.py
