@@ -19,7 +19,7 @@
 | 17 | [✓][17py]    |              |              | [✓][17rkt]   |              |              |              |
 | 18 | [✓][18py]    |              | [✓][18c]     | [✓][18rkt]   |              |              |              |
 | 19 | [✓][19py]    |              |              |              |              |              |              |
-| 20 | [✓][20py]    |              | [✓][20c]     | [✓][20rkt]   |              |              |              |
+| 20 | [✓][20py]    | [✓][20rb]    | [✓][20c]     | [✓][20rkt]   |              |              |              |
 | 21 | [✓][21py]    |              |              |              |              |              |              |
 | 22 |              |              |              |              |              |              |              |
 | 23 | [✓][23py]    |              | [✓][23c]     |              |              |              |              |
@@ -95,6 +95,7 @@
 [18rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2015/18/18-racket.rkt
 [19py]:      https://github.com/allengarvin/adventofcode/blob/main/2015/19/19-python.py
 [20py]:      https://github.com/allengarvin/adventofcode/blob/main/2015/20/20-python.py
+[20rb]:      https://github.com/allengarvin/adventofcode/blob/main/2015/20/20-ruby.rb
 [20c]:       https://github.com/allengarvin/adventofcode/blob/main/2015/20/20-c.c
 [20rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2015/20/20-racket.rkt
 [21py]:      https://github.com/allengarvin/adventofcode/blob/main/2015/21/21-python.py
