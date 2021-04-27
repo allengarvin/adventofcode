@@ -17,9 +17,134 @@
 */
 typedef struct tile_obj {
     int id;
-    ulong tile_c;        // long needs to be 64 bit, so on a 32-bit cpu this would fail
+    ulong data;        // long needs to be 64 bit, so on a 32-bit cpu this would fail
     int sides[4];
 } Tile;
+
+// Correct 2020-04-28
+int reverse(int n) {
+    int rev;
+
+    rev = 0;
+    for( int i=0; i<10; i++ )
+        rev |= !!(n & (1 << (9-i))) << i;
+    return rev;
+}
+
+void display_border(Tile *t) {
+    printf("Border %d:\n", t->id);
+    for( int i=0; i<10; i++ )
+        putchar(t->sides[0] & (1<<i) ? '#' : '.');
+    putchar(10);
+
+    for( int y=0; y<8; y++ ) {
+        putchar(t->sides[3] & (1 << (8-y)) ? '#' : '.');
+        for( int x=0; x<8; x++ )
+            putchar(' ');
+        putchar(t->sides[1] & (1 << (y+1)) ? '#' : '.');
+        putchar(10);
+    }
+
+    for( int i=9; i >= 0; --i )
+        putchar((t->sides[2] & (1<<i)) ? '#' : '.');
+    putchar(10);
+}
+
+// Correct 2020-04-27
+void display_tile(Tile *t, int with_borders) {
+    ulong d;
+
+    d = t->data;
+    printf("Tile %d:\n", t->id);
+    if( with_borders ) {
+        for( int i=0; i<10; i++ )
+            putchar(t->sides[0] & (1<<i) ? '#' : '.');
+        putchar(10);
+    }
+
+    for( int y=0; y<8; y++ ) {
+        if( with_borders ) {
+            putchar(t->sides[3] & (1 << (8-y)) ? '#' : '.');
+        }
+        for( int x=0; x<8; x++ )
+            putchar(d & ((ulong) 1 << (ulong) y*8 + x) ? '#' : '.');
+        if( with_borders ) {
+            putchar(t->sides[1] & (1 << (y+1)) ? '#' : '.');
+        }
+        putchar(10);
+    }
+
+    if( with_borders ) {
+        for( int i=9; i >= 0; --i )
+            putchar((t->sides[2] & (1<<i)) ? '#' : '.');
+        putchar(10);
+    }
+}
+
+// will check when rotation is in place
+void rotate_border(Tile *t, int n) {
+    int i;
+
+/*
+    printf("sides = {");
+    for( i=0; i<4; i++ )
+        printf("%5d, ", t->sides[i]);
+    printf("}\n");
+*/
+
+    for( i=0; i<n; i++ ) {
+        int j, last;
+
+        last = t->sides[3];
+        for( j=3; j>0; --j )
+            t->sides[j] = t->sides[j-1];
+
+        t->sides[0] = last;
+    }
+/*
+    printf("sides = {");
+    for( i=0; i<4; i++ )
+        printf("%5d, ", t->sides[i]);
+    printf("}\n");
+*/
+}
+
+// Correct: 2020-04-28
+void flip_horizontal(Tile *t) {
+    ulong new_data;
+    int tmp;
+
+    new_data = 0;
+
+    for( int y=0; y<8; ++y )
+        for( int x=0; x<8; ++x )
+            new_data |= (ulong) !!(t->data & ((ulong) 1 << y * 8 + (7-x))) << (y*8 + x);
+    t->data = new_data;
+
+    tmp = t->sides[1];
+    t->sides[1] = reverse(t->sides[3]);
+    t->sides[3] = reverse(tmp);
+    t->sides[0] = reverse(t->sides[0]);
+    t->sides[2] = reverse(t->sides[2]);
+}
+
+// Correct: 2020-04-28
+void flip_vertical(Tile *t) {
+    ulong new_data;
+    int tmp;
+
+    new_data = 0;
+    for( int y=0; y<8; ++y )
+        for( int x=0; x<8; ++x )
+            new_data |= (ulong) !!(t->data & ((ulong) 1 << ((7-y) * 8 + x))) << (y*8 + x);
+    t->data = new_data;
+
+    tmp = t->sides[0];
+    t->sides[0] = reverse(t->sides[2]);
+    t->sides[2] = reverse(tmp);
+    t->sides[1] = reverse(t->sides[1]);
+    t->sides[3] = reverse(t->sides[3]);
+}
 
 FILE *get_file_descriptor(int argc, char *argv[]) {
     FILE *fd;
@@ -63,49 +188,6 @@ FILE *get_file_descriptor(int argc, char *argv[]) {
     return fd;
 }
 
-int reverse(int n) {
-    int rev;
-
-    rev = 0;
-    while( n > 0 ) {
-        rev <<= 1;
-        if( n & 1 )
-            rev ^= 1;
-        n >>= 1;
-    }
-    return rev;
-}
-
-// Correct 2020-04-27
-void display_tile(Tile *t, int with_borders) {
-    ulong d;
-
-    d = t-> tile_c;
-    printf("Tile %d:\n", t->id);
-    if( with_borders ) {
-        for( int i=0; i<10; i++ )
-            putchar(t->sides[0] & (1<<i) ? '#' : '.');
-        putchar(10);
-    }
-
-    for( int y=0; y<8; y++ ) {
-        if( with_borders ) {
-            putchar(t->sides[3] & (1 << (8-y)) ? '#' : '.');
-        }
-        for( int x=0; x<8; x++ )
-            putchar(d & ((ulong) 1 << (ulong) y*8 + x) ? '#' : '.');
-        if( with_borders ) {
-            putchar(t->sides[1] & (1 << (y+1)) ? '#' : '.');
-        }
-        putchar(10);
-    }
-
-    if( with_borders ) {
-        for( int i=9; i >= 0; --i )
-            putchar((t->sides[2] & (1<<i)) ? '#' : '.');
-        putchar(10);
-    }
-}
 
 // Correct 2020-04-27
 void read_tiles(FILE *fd, Tile *tiles[]) {
@@ -151,7 +233,7 @@ void read_tiles(FILE *fd, Tile *tiles[]) {
         t->sides[2] = bottom;
         t->sides[3] = left;
 
-        t->tile_c = data;
+        t->data = data;
 
         if( i == 0 && 0 ) {    
             /*
@@ -236,5 +318,6 @@ int main(int argc, char *argv[]) {
 
     fd = get_file_descriptor(argc, argv);
     read_tiles(fd, tiles);
+    flip_horizontal(tiles[0]);
     
 }
