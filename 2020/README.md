@@ -19,7 +19,7 @@
 | 17 | [✓][17py]    |              |              |              |              |              |              |              |              |
 | 18 | [✓][18py]    | [✓][18rb]    | [✓][18c]     |              |              |              |              |              |              |
 | 19 | [✓][19py]    |              |              |              |              |              |              |              |              |
-| 20 | [✓][20py]    |              |              |              |              |              |              |              |              |
+| 20 | [✓][20py]    |              | [✓][20c]     |              |              |              |              |              |              |
 | 21 | [✓][21py]    | [✓][21rb]    |              |              |              |              |              |              |              |
 | 22 | [✓][22py]    |              |              |              |              |              |              |              |              |
 | 23 | [✓][23py]    |              |              |              |              |              |              |              |              |
@@ -87,6 +87,7 @@
 [18c]:       https://github.com/allengarvin/adventofcode/blob/main/2020/18/18-c.c
 [19py]:      https://github.com/allengarvin/adventofcode/blob/main/2020/19/19-python.py
 [20py]:      https://github.com/allengarvin/adventofcode/blob/main/2020/20/20-python.py
+[20c]:       https://github.com/allengarvin/adventofcode/blob/main/2020/20/20-c.c
 [21py]:      https://github.com/allengarvin/adventofcode/blob/main/2020/21/21-python.py
 [21rb]:      https://github.com/allengarvin/adventofcode/blob/main/2020/21/21-ruby.rb
 [22py]:      https://github.com/allengarvin/adventofcode/blob/main/2020/22/22-python.py
