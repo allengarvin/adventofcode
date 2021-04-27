@@ -166,6 +166,11 @@ void rotate90(Tile *t) {
     rotate_border(t, 1);
 }
 
+void rotate(Tile *t, int n) {
+    for( int i=0; i<n; i++ )
+        rotate90(t);
+}
+
 FILE *get_file_descriptor(int argc, char *argv[]) {
     FILE *fd;
     char *fn;
@@ -434,16 +439,11 @@ Tile *choose_topleft_corner(Tile *tiles[]) {
             for( int side=0; side<4; side++ ) {
                 if( valid_side(tiles, i, side) && valid_side(tiles, i, (side+1)%4) ) {
                     if( side == 0 )
-                        rotate90(t);
-                    if( side == 2 ) {
-                        rotate90(t);
-                        rotate90(t);
-                        rotate90(t);
-                    }
-                    if( side == 3 ) {
-                        rotate90(t);
-                        rotate90(t);
-                    }
+                        rotate(t, 1);
+                    if( side == 2 ) 
+                        rotate(t, 3);
+                    if( side == 3 )
+                        rotate(t, 2);
                     break;
                 }
             }
@@ -453,6 +453,7 @@ Tile *choose_topleft_corner(Tile *tiles[]) {
 }
 
 Tile *choose_right(Tile *tiles[], Tile *t) {
+    Tile *right;
     int j;
     for( int i=0; i<144; i++ ) {
         if( tiles[i]->id == t->id )
@@ -460,8 +461,36 @@ Tile *choose_right(Tile *tiles[], Tile *t) {
         for( int j=0; j<8; j++ ) {
             if( tiles[i]->all_sides[j] == reverse(t->sides[1]) ) { // think I need to check reverse.
                 // If j is 0-3, we just need to rotate. If 4-7, we need a flip
+                right = tiles[i];
+                display_tile(t, 1);
+
+                if( j == 0 )
+                    rotate(right, 3);
+                if( j == 1 )
+                    rotate(right, 2);
+                if( j == 2 )
+                    rotate(right, 1);
+                if( j == 3 )
+                    ;
+                if( j == 4 ) {
+                    rotate(right, 3);
+                    flip_vertical(right); 
+                }
+                if( j == 5 ) {
+                    rotate(right, 2);
+                    flip_vertical(right); 
+                }
+                if( j == 6 ) {
+                    rotate(right, 1);
+                    flip_vertical(right); 
+                }
+                if( j == 7 )
+                    flip_vertical(right);
+                   
+                
                 printf("FOUND RIGHT for tile %d (%d)\n", t->id, j);
-                exit(1);
+                display_tile(right, 1);
+                printf("---------------\n");
                 return tiles[i];
             }
         }
@@ -486,15 +515,16 @@ int *solve_puzzle(Tile *tiles[]) {
 
     i = 0;
     for( int y=0; y<12; y++ ) {
-        grid[i++] = left;
+        grid[i++] = left->id;
         t = left;
 
         for( int x=0; x<11; x++ ) {
             t = choose_right(tiles, t);
-            grid[i++] = t;
+            grid[i++] = t->id;
         }
         if( y != 11 )
             left = choose_down(tiles, left);
+        break;
     }
         
 }
