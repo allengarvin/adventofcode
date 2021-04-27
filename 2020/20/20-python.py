@@ -178,6 +178,7 @@ def main(args):
         y = y.attach_map.get(SOUTH, False)
         x = y
 
+    //print("\n".join(final_grid))
     find_monsters(final_grid)
 
 def print_grid(grid):
