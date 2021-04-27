@@ -458,7 +458,8 @@ Tile *choose_right(Tile *tiles[], Tile *t) {
         if( tiles[i]->id == t->id )
             continue;
         for( int j=0; j<8; j++ ) {
-            if( tiles[i]->all_sides[j] == reverse(t->sides[1]) ) { // think I need to check reverse
+            if( tiles[i]->all_sides[j] == reverse(t->sides[1]) ) { // think I need to check reverse.
+                // If j is 0-3, we just need to rotate. If 4-7, we need a flip
                 printf("FOUND RIGHT for tile %d (%d)\n", t->id, j);
                 exit(1);
                 return tiles[i];
@@ -475,18 +476,25 @@ Tile *choose_down(Tile *tiles[], Tile *t) {
     int j;
 }
 
-int solve_puzzle(Tile *tiles[]) {
+int *solve_puzzle(Tile *tiles[]) {
     Tile *corner, *t, *left;
-    int i;
+    int i, *grid;
 
+    grid = (int *) malloc(144 * sizeof(int));
     corner = choose_topleft_corner(tiles);
     left = corner;
+
+    i = 0;
     for( int y=0; y<12; y++ ) {
+        grid[i++] = left;
         t = left;
-        for( int x=0; x<12; x++ ) {
+
+        for( int x=0; x<11; x++ ) {
             t = choose_right(tiles, t);
+            grid[i++] = t;
         }
-        left = choose_down(tiles, left);
+        if( y != 11 )
+            left = choose_down(tiles, left);
     }
         
 }
