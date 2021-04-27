@@ -19,6 +19,7 @@ typedef struct tile_obj {
     int id;
     ulong data;        // long needs to be 64 bit, so on a 32-bit cpu this would fail
     int sides[4];
+    int all_sides[8];
 } Tile;
 
 // Correct 2020-04-28
@@ -146,6 +147,19 @@ void flip_vertical(Tile *t) {
     t->sides[3] = reverse(t->sides[3]);
 }
 
+// Correct: 2020-04-28
+void rotate90(Tile *t) {
+    ulong new_data;
+
+    new_data = (ulong) 0;
+    for( int y=0; y<8; y++ )
+        for( int x=0; x<8; x++ )
+            new_data |= (ulong) !!(t->data & ((ulong) 1 << (y*8+x))) << (ulong) (x * 8 + (7-y));
+    t->data = new_data;
+
+    rotate_border(t, 1);
+}
+
 FILE *get_file_descriptor(int argc, char *argv[]) {
     FILE *fd;
     char *fn;
@@ -233,6 +247,14 @@ void read_tiles(FILE *fd, Tile *tiles[]) {
         t->sides[2] = bottom;
         t->sides[3] = left;
 
+        t->all_sides[0] = top;
+        t->all_sides[1] = right;
+        t->all_sides[2] = bottom;
+        t->all_sides[3] = left;
+        t->all_sides[4] = reverse(top);
+        t->all_sides[5] = reverse(right);
+        t->all_sides[6] = reverse(bottom);
+        t->all_sides[7] = reverse(left);
         t->data = data;
 
         if( i == 0 && 0 ) {    
@@ -312,12 +334,59 @@ void read_tiles(FILE *fd, Tile *tiles[]) {
     }
 }
 
+/* There are 144*8 = 1152 possible edges
+   For a 12x12 grid, there are 2 * 12 * 11 = 264 inner edges--so there should be 264 equal pairs of edges (528 numbers)
+   And in fact, printf each side on from all_sides each on a row:
+    ./a.out  | sort | uniq -c | grep '^ *2' | wc
+    528    1056    6286
+
+    Since we know this is exact, the tile layout was nicely designed for us.
+    There are 4 corners, which have only 2 sides in common with other tiles
+    There are 40 additional sides, which have 3 sides in common with other tiles
+    There are 100 interior sides, which have 4 sides in common
+    
+*/
+
+void quick_process(Tile *tiles[]) {
+    int cnt, flag;
+    Tile *a, *b;
+
+    for( int i=0; i<144; i++ ) {
+        cnt = 0;
+        a = tiles[i];
+
+        for( int j=0; j<144; j++ ) {
+
+            b = tiles[j];
+            if( i == j )
+                continue;
+
+            flag = 0;
+            for( int x=0; x<8; x++ )
+                for( int y=0; y<8; y++ ) {
+                    if( a->all_sides[x] == b->all_sides[y] )
+                        cnt++;
+                }
+                    
+        }
+        if( cnt == 4 )
+            printf("Tile %d: corner\n", a->id, cnt);
+        if( cnt == 6 )
+            printf("Tile %d: edge\n", a->id, cnt);
+        if( cnt == 8 )
+            printf("Tile %d: interior\n", a->id, cnt);
+    }
+}
+
 int main(int argc, char *argv[]) {
     FILE *fd;
     Tile *tiles[144];
 
     fd = get_file_descriptor(argc, argv);
     read_tiles(fd, tiles);
-    flip_horizontal(tiles[0]);
-    
+/*    for( int i=0; i<144; i++ ) {
+        for( int j=0; j<8; j++ )
+            printf("%d\n", tiles[i]->all_sides[j]);
+    } */
+    quick_process(tiles);
 }
