@@ -1,4 +1,5 @@
 /* Working on this now and then, as it's likely the hardest (as in: tedious) of the 2020 in C */
+/* Part1 finished! */
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
@@ -15,11 +16,16 @@
     Then, we find 4 corners and built left-to-right
     Then, stitch together puzzle pieces and pick out the serpents
 */
+
+#define CORNER 1
+#define EDGE 2
+#define INNER 3
 typedef struct tile_obj {
     int id;
     ulong data;        // long needs to be 64 bit, so on a 32-bit cpu this would fail
     int sides[4];
     int all_sides[8];
+    int type;
 } Tile;
 
 // Correct 2020-04-28
@@ -345,6 +351,7 @@ void read_tiles(FILE *fd, Tile *tiles[]) {
     There are 40 additional sides, which have 3 sides in common with other tiles
     There are 100 interior sides, which have 4 sides in common
     
+    Yay, tests match up exactly! Model is correct
 */
 
 void quick_process(Tile *tiles[]) {
@@ -369,18 +376,125 @@ void quick_process(Tile *tiles[]) {
                 }
                     
         }
-        if( cnt == 4 )
-            printf("Tile %d: corner\n", a->id, cnt);
-        if( cnt == 6 )
-            printf("Tile %d: edge\n", a->id, cnt);
-        if( cnt == 8 )
-            printf("Tile %d: interior\n", a->id, cnt);
+        if( cnt == 4 ) {
+            //printf("Tile %d: corner\n", a->id, cnt);
+            a->type = CORNER;
+            /*
+            printf("  Sides: { ");
+            for( int x=0; x<8; x++ ) {
+                flag = 0;
+                for( int d=0; d<144; d++ ) {
+                    if( d == i ) continue;
+                    for( int e=0; e<8; e++ ) {
+                        if( a->all_sides[x] == tiles[d]->all_sides[e] ) {
+                            printf("*%d*, ", a->all_sides[x]);
+                            flag = 1;
+                            break;
+                        }
+                        if( flag ) break;
+                    }
+                    if( flag ) break;
+                }
+                if( !flag )
+                    printf("%d, ", a->all_sides[x]);
+            }
+            printf("}\n"); */
+        }
+        if( cnt == 6 ) {
+            //printf("Tile %d: edge\n", a->id, cnt);
+            a->type = EDGE;
+        }
+        if( cnt == 8 ) {
+            //printf("Tile %d: interior\n", a->id, cnt);
+            a->type = INNER;
+        }
     }
+}
+
+int valid_side(Tile *tiles[], int t_indx, int side) {
+    for( int i=0; i<144; i++ ) {
+        if( i == t_indx )
+            continue;
+        for( int j=0; j<8; j++ )
+            if( tiles[i]->all_sides[j] == tiles[t_indx]->sides[side] )
+                return 1;
+    }
+}
+
+Tile *choose_topleft_corner(Tile *tiles[]) {
+    Tile *t;
+    int side;
+
+    for( int i=0; i<144; i++ ) {
+        t = tiles[i];
+
+        if( t->type == CORNER ) { //placeholder. Eventually I want to choose a particular tile that lines up the monsters nicely
+            // Let's rotate it so the right and bottom are the sides (sides[1] && sides[2])
+
+            for( int side=0; side<4; side++ ) {
+                if( valid_side(tiles, i, side) && valid_side(tiles, i, (side+1)%4) ) {
+                    if( side == 0 )
+                        rotate90(t);
+                    if( side == 2 ) {
+                        rotate90(t);
+                        rotate90(t);
+                        rotate90(t);
+                    }
+                    if( side == 3 ) {
+                        rotate90(t);
+                        rotate90(t);
+                    }
+                    break;
+                }
+            }
+            return t;
+        }
+    }
+}
+
+Tile *choose_right(Tile *tiles[], Tile *t) {
+    int j;
+    for( int i=0; i<144; i++ ) {
+        if( tiles[i]->id == t->id )
+            continue;
+        for( int j=0; j<8; j++ ) {
+            if( tiles[i]->all_sides[j] == reverse(t->sides[1]) ) { // think I need to check reverse
+                printf("FOUND RIGHT for tile %d (%d)\n", t->id, j);
+                exit(1);
+                return tiles[i];
+            }
+        }
+        if( j == 8 ) {
+            printf("BUG! choose-right\n");
+            exit(1);
+        }
+    }
+}
+
+Tile *choose_down(Tile *tiles[], Tile *t) {
+    int j;
+}
+
+int solve_puzzle(Tile *tiles[]) {
+    Tile *corner, *t, *left;
+    int i;
+
+    corner = choose_topleft_corner(tiles);
+    left = corner;
+    for( int y=0; y<12; y++ ) {
+        t = left;
+        for( int x=0; x<12; x++ ) {
+            t = choose_right(tiles, t);
+        }
+        left = choose_down(tiles, left);
+    }
+        
 }
 
 int main(int argc, char *argv[]) {
     FILE *fd;
     Tile *tiles[144];
+    ulong total;
 
     fd = get_file_descriptor(argc, argv);
     read_tiles(fd, tiles);
@@ -389,4 +503,12 @@ int main(int argc, char *argv[]) {
             printf("%d\n", tiles[i]->all_sides[j]);
     } */
     quick_process(tiles);
+    
+    total = (ulong) 1;
+    for( int i=0; i<144; i++ )
+        if( tiles[i]->type == CORNER ) {
+            total *= (ulong) tiles[i]->id;
+        }
+    printf("%lu\n", total);
+    solve_puzzle(tiles);
 }
