@@ -1,142 +1,151 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-import sys, os, argparse, operator, re
+import sys, argparse, operator, re, typing
 
-class INTCODE:
-    tape = []
-    pc = 0
+DEBUG=0
 
-    opcodes = dict()
-    HALT=False
+MODE_POSITION=0
 
-    debug = False
+ARG1=0
+ARG2=1
+ARG3=2
 
-    def display_state(self):
-        tape = self.tape
-        pc = self.pc
-
-        max = -1
-        for i in tape:
-            if len(str(i)) > max:
-                max = len(str(i))
-        print ", ".join(["%*d" % (max, i) for i in tape])
-        print ", ".join(["^" * max if i == pc else " " * max for i in range(len(tape))])
+OP_ADD=1
+OP_MUL=2
+OP_HALT=99
 
 
-    def op_halt(self, mode):
-        if self.debug:
-            print("op_halt")
-            self.display_state()
-        self.HALT = True
+class Intcode:
+    class Opcode:
+        
+        def __init__(self, opcode, bytes, params, param_modes, address, computer=None):
+            self.bytes = bytes
+            self.base_opcode = opcode
+            self.params = params
+            self.param_modes = param_modes
+            self.addr = address
+            self.computer = computer
+            #print("Opcode({}, {}, {}, {})".format(opcode, bytes, params, param_modes))
 
-    def op_add(self, mode):
-        tape = self.tape
-        pc = self.pc
+        def __repr__(self):
+            s = "%04X    " % self.addr
 
-        if self.debug:
-            print("op_add (mode=%s)" % mode)
-            self.display_state()
+            s += "%-4s\t" % { 1 : "ADD", 2 : "MUL", 3 : "IN",  4 : "OUT", 5 : "JZ",
+                           6 : "JNZ", 7 : "SLT", 8 : "SEQ", 9 : "INCB", 99 : "HALT" }[ self.base_opcode ]
 
-        arg1 = tape[pc+1]
-        arg2 = tape[pc+2]
-        dest = tape[pc+3]
+            operands = []
+            for i in range(self.params):
+                if self.param_modes[i] == MODE_POSITION:
+                    operands.append("@" + str(self.bytes[1+i]))
+                else:
+                    print("BUG")
+                    sys.exit(1)
+            s += "\t".join([str(o) for o in operands])
+            return s
 
-        if mode == "position":
-            if self.debug:
-                print("ADD @%d(%d) + %d(%d) = %d => @%d" % (arg1, tape[arg1], arg2, tape[arg2], tape[arg1] + tape[arg2], dest))
-            tape[dest] = tape[arg1] + tape[arg2]
-        else:
-            if self.debug:
-                print("ADD %d + %d = %d => @%d" % (arg1, arg2, arg1 + arg2, dest))
-            tape[dest] = arg1 * arg2
-        self.pc += 4
+        def __str__(self):
+            return self.__repr__()
 
-    def op_mul(self, mode):
-        tape = self.tape
-        pc = self.pc
+        def run_op(self, program: list, pc: int):
+            opc = self.base_opcode
+            operands = []
+            literal_operands = []
+    
+            for i in range(self.params):
+                if( self.param_modes[i] == MODE_POSITION ):
+                    operands.append(program[self.bytes[i+1]])
+                    literal_operands.append(self.bytes[i+1])
 
-        if self.debug:
-            print("op_mul (mode=%s)" % mode)
-            self.display_state()
-        arg1 = tape[pc+1]
-        arg2 = tape[pc+2]
-        dest = tape[pc+3]
+            self.computer.debug(self)
+            # print("  operands:", operands)
+            if opc == OP_ADD:
+                program[literal_operands[ARG3]] = operands[ARG1] + operands[ARG2]
+            elif opc == OP_MUL:
+                program[literal_operands[ARG3]] = operands[ARG1] * operands[ARG2]
+            elif opc == OP_HALT:
+                return -1
 
-        if mode == "position":
-            if self.debug:
-                print("MUL @%d(%d) * %d(%d) = %d => @%d" % (arg1, tape[arg1], arg2, tape[arg2], tape[arg1] * tape[arg2], dest))
-            tape[dest] = tape[arg1] * tape[arg2]
-        else:
-            if self.debug:
-                print("MUL %d * %d = %d => @%d" % (arg1, arg2, arg1 * arg2, dest))
-            tape[dest] = arg1 * arg2
+            return pc + len(self.bytes)
 
-        self.pc += 4
-
-    def __init__(self, tape, debug=False):
-        self.tape = list(tape)
+    def __init__(self, program: list, noun=None, verb=None, input_queue=None):
+        self._program_unmodified = program[:]
+        self.program = program[:]
         self.pc = 0
-        self.debug = debug
+        self.halted = False
+        self.blocked = False
 
-        self.opcodes = {
-            99 : self.op_halt,
-             1 : self.op_add,
-             2 : self.op_mul,
-        }
+        if input_queue:
+            self.input_queue = input_queue
+        else:
+            self.input_queue = []
+        self.output_queue = []
+        self.instructions = {}
 
-#        if self.debug:
-#            self.display_state()
-        while True:
-            op = tape[self.pc]
+        if noun:
+            self.program[1] = noun
+        if verb:
+            self.program[2] = verb
 
-            DE = op % 100
-            C = (op / 100) % 10
-            B = (op / 1000) % 10
-            A = (op / 10000) % 10
+    def debug(self, msg):
+        if DEBUG:
+            print(msg)
 
-            if DE not in self.opcodes:
-                print("EXCEPTION: unknown opcode @%d: %d" % (self.pc, DE))
-                self.tape[0] = "X"
-                break
+    def read_instruction(self):
+        program = self.program
 
-            self.opcodes[DE]("immediate" if B == 1 else "position")
-            if self.HALT:
-                break
+        opcode = program[self.pc]
 
-def init():
-    print opcodes
+        base_opcode = opcode % 100
+        param_modes = [ (opcode // 100) % 10, (opcode // 1000) % 10, (opcode // 10000) % 10 ]
+        params = { 1 : 3, 2 : 3, 3 : 1, 4 : 1, 5 : 2, 6 : 2, 7 : 3, 8 : 3, 9 : 1, 99 : 0 }[base_opcode]
+        op_bytes = program[self.pc : self.pc + params + 1]
+
+        if self.pc in self.instructions:
+            op = self.instructions[self.pc]
+            if op.bytes == op_bytes:
+                return op
+            else:
+                debug("INTEREST: opcode/arguments changed @{}".format(self.pc))
+
+        op_obj = self.Opcode(base_opcode, op_bytes, params, param_modes, self.pc, computer=self)
+        self.instructions[self.pc] = op_obj
+        return op_obj
+
+    def byte_addr(self, addr: int):
+        return self.program[addr]
+
+    def run_program(self):
+        self.pc = 0
+        while not self.halted and not self.blocked:
+            o = self.read_instruction()
+            self.pc = o.run_op(self.program, self.pc)
+
+            if self.pc == -1:
+                self.halted = True
+            #print(self.program)
+
+
 
 def main(args):
-    global tape
+    program_bytes = [int(x) for x in open(args.file).read().strip().split(",")]
 
-    tape = [int(x) for x in open(args.file).read().strip().split(",")]
+    intcode_instance = Intcode(program_bytes, noun=12, verb=2)
+    intcode_instance.run_program()
+    print(intcode_instance.byte_addr(0))
 
-    tape[1] = 12
-    tape[2] = 2
-    computer = INTCODE(tape, debug=False)
-    print("Problem 1: %d" % computer.tape[0])
-    
-    while True:
-        for y in range(100):
-            for x in range(100):
-                tape[1], tape[2] = x, y
-                computer = INTCODE(tape)
-
-                if computer.tape[0] == 19690720:
-                    print("Problem 2: %d" % (x*100 + y))
-                    sys.exit(0)
-
+    results = {}
+    for noun, verb in [(x,y) for x in range(100) for y in range(100)]:
+        intcode_instance = Intcode(program_bytes, noun=noun, verb=verb)
+        intcode_instance.run_program()
+        if intcode_instance.byte_addr(0) == 19690720:
+            print(noun * 100 + verb)
+            break
+        
+        
 
 if __name__ == "__main__":
-    default_file = sys.argv[0].split("-")[0] + "-input.txt"
-    ap = argparse.ArgumentParser(description="2019 Day 2 AOC: Program alarm")
-    ap.add_argument("-1", "--one", action="store_true", help="Problem 1")
-    ap.add_argument("-2", "--two", action="store_true", help="Problem 2")
-    ap.add_argument("-v", "--verbose", action="store_true", help="Debug")
-
-    ap.add_argument("file", help="Input file", default=default_file, nargs="?")
-    args = ap.parse_args()
-    if not args.one and not args.two:
-        args.one = args.two = True
-    main(args)
+    day = sys.argv[0].split("-")[0]
+    ap = argparse.ArgumentParser(description="2019 Day {0} AOC: Program alarm".format(day))
+    ap.add_argument("file", help="Input file", default=day + "-input.txt", nargs="?")
+    main(ap.parse_args())
     
