@@ -247,7 +247,7 @@ def main(args):
             result = i.output_queue[-1]
             if result > maximum:
                 maximum = result
-    #print(maximum)
+    print(maximum)
 
     maximum = -1
     for perm in itertools.permutations(range(5, 10)):
