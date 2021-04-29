@@ -8,7 +8,7 @@
 |  6 | [✓][06py]    | [✓][06rb]    |              |              |              |              |              |
 |  7 | [✓][07py]    |              | [✓][07c]     |              |              |              |              |
 |  8 | [✓][08py]    |              | [✓][08c]     | [✓][08rkt]   |              |              |              |
-|  9 |              |              |              |              |              |              |              |
+|  9 | [✓][09py]    |              |              |              |              |              |              |
 | 10 | [✓][10py]    |              |              |              |              |              |              |
 | 11 |              |              |              |              |              |              |              |
 | 12 | [✓][12py]    |              |              |              |              |              |              |
@@ -48,5 +48,6 @@
 [08py]:      https://github.com/allengarvin/adventofcode/blob/main/2019/08/08-python.py
 [08c]:       https://github.com/allengarvin/adventofcode/blob/main/2019/08/08-c.c
 [08rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2019/08/08-racket.rkt
+[09py]:      https://github.com/allengarvin/adventofcode/blob/main/2019/09/09-python.py
 [10py]:      https://github.com/allengarvin/adventofcode/blob/main/2019/10/10-python.py
 [12py]:      https://github.com/allengarvin/adventofcode/blob/main/2019/12/12-python.py
