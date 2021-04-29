@@ -192,7 +192,7 @@ class Intcode:
         if input_queue:
             self.input_queue += input_queue
 
-        while not self.halted and not self.blocked:
+        while not self.halted:
             o = self.read_instruction()
             self.pc = o.run_op(self.program, self.pc)
 
@@ -203,9 +203,33 @@ class Intcode:
             if self.pc > len(self.program):
                 print("BUG: jumped beyond memory")
                 exit(1)
+            if self.blocked:
+                break
 
         if self.blocked:
             self.debug("Blocked waiting for input")
+
+    def continue_run(self, input_queue=None):
+        #print("Continuing at ", self.read_instruction(), "Input queue is", input_queue)
+
+        if input_queue:
+            self.input_queue += input_queue
+
+        self.blocked = False
+        while not self.halted:
+            o = self.read_instruction()
+            self.pc = o.run_op(self.program, self.pc)
+
+            if self.pc == -1:
+                self.halted = True
+            #print(self.output_queue)
+            #print(self.program)
+            if self.pc > len(self.program):
+                print("BUG: jumped beyond memory")
+                exit(1)
+            if self.blocked:
+                break
+
 
 
 
@@ -223,7 +247,30 @@ def main(args):
             result = i.output_queue[-1]
             if result > maximum:
                 maximum = result
+    #print(maximum)
+
+    maximum = -1
+    for perm in itertools.permutations(range(5, 10)):
+        amplifiers = [Intcode(program_bytes) for x in range(5)]
+        result = 0
+
+        for i, phase in enumerate(perm):
+            in_queue = [phase, result]
+            amplifiers[i].run_program(input_queue=in_queue)
+            result = amplifiers[i].output_queue[-1]
+            #print("first", i, result)
+
+        i = 0
+        while amplifiers[-1].halted == False:
+            amplifiers[i % 5].continue_run(input_queue=[result])
+            result = amplifiers[i % 5].output_queue[-1]
+            i += 1
+            #print("%3d result=%d" % (i, result))
+        if result > maximum:
+            maximum = result
     print(maximum)
+
+
 
 if __name__ == "__main__":
     day = sys.argv[0].split("-")[0]
