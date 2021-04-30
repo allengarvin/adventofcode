@@ -13,7 +13,7 @@
 | 11 | [✓][11py]    |              |              |              |              |              |              |
 | 12 | [✓][12py]    |              |              |              |              |              |              |
 | 13 |              |              |              |              |              |              |              |
-| 14 |              |              |              |              |              |              |              |
+| 14 |              |              |              | [✓][14rkt]   |              |              |              |
 | 15 |              |              |              |              |              |              |              |
 | 16 |              |              |              |              |              |              |              |
 | 17 |              |              |              |              |              |              |              |
@@ -52,3 +52,4 @@
 [10py]:      https://github.com/allengarvin/adventofcode/blob/main/2019/10/10-python.py
 [11py]:      https://github.com/allengarvin/adventofcode/blob/main/2019/11/11-python.py
 [12py]:      https://github.com/allengarvin/adventofcode/blob/main/2019/12/12-python.py
+[14rkt]:     https://github.com/allengarvin/adventofcode/blob/main/2019/14/14-racket.rkt
