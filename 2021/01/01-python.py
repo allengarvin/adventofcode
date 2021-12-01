@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import sys, os, argparse, operator, re
+import argparse, sys
 
 def increasingp(lst):
     return len([n for n, x in enumerate(lst[1:]) if x > lst[n]])
