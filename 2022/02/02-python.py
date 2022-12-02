@@ -9,13 +9,8 @@ def main(args):
     for line in open(args.file):
         e, p = line.strip().split()
         en, pn = ord(e)-65, ord(p)-88
-        if pn == 0:
-            p2n = score_grid[en].index(-1)
-        elif pn == 1:
-            p2n = score_grid[en].index(0)
-        else:
-            p2n = score_grid[en].index(1)
-        part1 += (score_grid[en][pn]+1) * 3 + pn + 1
+        p2n = score_grid[en].index([-1,0,1][pn])
+        part1 += (score_grid[en][pn]+1)*3 + pn + 1
         part2 += (score_grid[en][p2n]+1)*3 + p2n + 1
 
     print(part1)
