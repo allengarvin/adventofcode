@@ -6,19 +6,11 @@ class Stacks:
     def __init__(self, n, lines):
         self.stacks = [""] * n
         for l in lines:
-            crates = l[1:][::4]
+            crates = l[1::4]
             for i, c in enumerate(crates):
                 if c != " ":
                     self.stacks[i] = c + self.stacks[i]
-    def status(self):
-        mx = max([len(x) for x in self.stacks])
-        for i in range(mx-1,-1,-1):
-            ln = ""
-            for s in self.stacks:
-                ln += "[{}] ".format(s[i]) if i < len(s) else "    "
-            print(ln)
-        print(" " + "   ".join([str(x+1) for x in range(len(self.stacks))]))
-                    
+
     def move_crates(self, cnt, frm, to, CrateMover9001):
         if CrateMover9001:
             self.stacks[to] = self.stacks[to] + self.stacks[frm][::-1][:cnt][::-1]
